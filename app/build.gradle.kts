@@ -263,7 +263,9 @@ androidComponents {
     onVariants { variant ->
         val variantName = variant.name.replaceFirstChar { it.uppercase() }
         val checkTask = tasks.register("checkReceiveOnlyManifest$variantName") {
-            val manifest = variant.artifacts.get(com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST)
+            val manifest = variant.artifacts.get(
+                com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST
+            )
             inputs.file(manifest)
             doLast {
                 val text = manifest.get().asFile.readText()

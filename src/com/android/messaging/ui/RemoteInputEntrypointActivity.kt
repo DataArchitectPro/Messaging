@@ -14,7 +14,10 @@ class RemoteInputEntrypointActivity : BugleComponentActivity() {
 
         // receive-only: replying from a notification is disabled
         if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
-            LogUtil.w(LogUtil.BUGLE_TAG, "${ReceiveOnlyPolicy.LOG_PREFIX}RemoteInputEntrypointActivity")
+            LogUtil.w(
+                LogUtil.BUGLE_TAG,
+                "${ReceiveOnlyPolicy.LOG_PREFIX}RemoteInputEntrypointActivity"
+            )
             setResult(RESULT_CANCELED)
             finish()
             return

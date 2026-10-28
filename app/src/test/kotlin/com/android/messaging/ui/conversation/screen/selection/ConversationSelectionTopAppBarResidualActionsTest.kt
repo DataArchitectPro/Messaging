@@ -13,6 +13,7 @@ import com.android.messaging.ui.conversation.screen.model.ConversationMessageAct
 import com.android.messaging.ui.conversation.screen.model.ConversationMessageSelectionUiState
 import io.mockk.verify
 import kotlinx.collections.immutable.persistentSetOf
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -21,6 +22,7 @@ import org.robolectric.RobolectricTestRunner
 internal class ConversationSelectionTopAppBarResidualActionsTest : BaseConversationScreenTest() {
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun primaryDownloadAndResendActions_areRenderedAndForwardClicks() {
         val screenModel = createScreenModel()
         setSelectionContent(
@@ -49,6 +51,7 @@ internal class ConversationSelectionTopAppBarResidualActionsTest : BaseConversat
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun overflowShareForwardAndDetailsActions_dismissMenuAndForwardClicks() {
         val screenModel = createScreenModel()
         setSelectionContent(

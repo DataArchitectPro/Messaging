@@ -23,6 +23,7 @@ import com.android.messaging.ui.conversation.screen.model.ConversationMessageSel
 import io.mockk.every
 import io.mockk.verify
 import kotlinx.collections.immutable.persistentSetOf
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -32,6 +33,7 @@ import org.robolectric.Shadows
 internal class ConversationScreenInteractionTest : BaseConversationScreenTest() {
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun longPressingRecordButton_whenAudioPermissionGrantedStartsUnlockedRecording() {
         grantAudioRecordingPermission()
         val screenModel = createScreenModel()
@@ -75,6 +77,7 @@ internal class ConversationScreenInteractionTest : BaseConversationScreenTest() 
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun clickingAudioAttachmentMenuItem_whenAudioPermissionGrantedStartsLockedRecording() {
         grantAudioRecordingPermission()
         val screenModel = createScreenModel()

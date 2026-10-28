@@ -56,7 +56,6 @@ import com.android.messaging.ui.common.components.ComposeBarControlHeight
 import com.android.messaging.ui.common.components.ComposeBarVerticalPadding
 import com.android.messaging.ui.common.components.LocalIsListDetailPane
 import com.android.messaging.ui.common.components.PrimaryActionButton
-import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.ui.common.components.contentSurfaceShape
 import com.android.messaging.ui.common.components.horizontalSafeDrawingInsets
 import com.android.messaging.ui.common.components.reorder.OverlayReorderAnimation
@@ -74,6 +73,7 @@ import com.android.messaging.ui.conversationlist.common.support.previewConversat
 import com.android.messaging.ui.conversationlist.model.ConversationListContentUiState
 import com.android.messaging.ui.conversationlist.model.ConversationListItemUiModel as Model
 import com.android.messaging.ui.core.MessagingPreviewTheme
+import com.android.messaging.util.ReceiveOnlyPolicy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

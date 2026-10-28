@@ -1,6 +1,5 @@
 package com.android.messaging.domain.conversation.usecase.draft
 
-import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.data.conversation.mapper.ConversationDraftMessageDataMapper
 import com.android.messaging.data.conversation.model.ConversationId
 import com.android.messaging.data.conversation.model.draft.ConversationDraft
@@ -28,6 +27,7 @@ import com.android.messaging.sms.MmsConfig
 import com.android.messaging.sms.MmsUtils
 import com.android.messaging.util.ContentType
 import com.android.messaging.util.PhoneUtils
+import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.util.core.extension.unitFlow
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException

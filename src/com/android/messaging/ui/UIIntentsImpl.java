@@ -164,7 +164,7 @@ public class UIIntentsImpl extends UIIntents {
                                         final Point clickPosition) {
         // receive-only: calls are disabled, copy the number instead
         if (!ReceiveOnlyPolicy.CALLING_ENABLED) {
-            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "launchPhoneCallActivity");
+            LogUtil.w(LogUtil.BUGLE_TAG, ReceiveOnlyPolicy.LOG_PREFIX + "launchPhoneCallActivity");
             final ClipboardManager clipboard = context.getSystemService(ClipboardManager.class);
             clipboard.setPrimaryClip(ClipData.newPlainText(null, phoneNumber));
             Toast.makeText(context, R.string.receive_only_calls_disabled, Toast.LENGTH_SHORT)

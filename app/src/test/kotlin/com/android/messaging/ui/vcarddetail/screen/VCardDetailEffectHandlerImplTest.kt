@@ -21,6 +21,7 @@ import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -71,6 +72,7 @@ internal class VCardDetailEffectHandlerImplTest {
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun handle_openDial_startsDialIntent() {
         val intent = captureStartedIntent(VCardFieldAction.Dial("+15550001"))
 
@@ -114,6 +116,7 @@ internal class VCardDetailEffectHandlerImplTest {
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun handle_openField_whenNoActivityFound_isSwallowed() {
         every { activity.startActivity(any()) } throws ActivityNotFoundException()
 

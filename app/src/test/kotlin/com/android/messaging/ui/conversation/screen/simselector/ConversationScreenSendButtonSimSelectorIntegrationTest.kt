@@ -12,6 +12,7 @@ import com.android.messaging.ui.conversation.CONVERSATION_SIM_SELECTOR_SHEET_TES
 import com.android.messaging.ui.conversation.conversationSimSelectorItemTestTag
 import com.android.messaging.ui.conversation.testAttSubscription
 import io.mockk.verify
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -21,6 +22,7 @@ internal class ConversationScreenSendButtonSimSelectorIntegrationTest :
     BaseConversationScreenSimSelectorIntegrationTest() {
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun sendLongPress_whenSimSelectorUnavailableDoesNotOpenSheet() {
         val screenModel = createScreenModel()
         setSimSelectorContent(
@@ -36,6 +38,7 @@ internal class ConversationScreenSendButtonSimSelectorIntegrationTest :
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun sendLongPress_whenSimSelectorAvailableOpensSheetAndSelectingSimDismissesIt() {
         val screenModel = createScreenModel()
         setSimSelectorContent(

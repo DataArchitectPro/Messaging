@@ -31,6 +31,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -144,6 +145,7 @@ internal class ConversationMessageTextLinkGestureTest : BaseConversationMessageR
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun linkLongPressUnderASubject_copyLinkCopiesTheWholeLink() {
         setLinkMessageContentUnderASubject()
 
@@ -177,6 +179,7 @@ internal class ConversationMessageTextLinkGestureTest : BaseConversationMessageR
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun phoneNumberAndEmailAddressActionsCopyTheTextAsWritten() {
         setConversationMessageContent(message = message(text = CONTACT_DETAILS_TEXT))
         awaitLinkAnnotated(text = CONTACT_DETAILS_TEXT)

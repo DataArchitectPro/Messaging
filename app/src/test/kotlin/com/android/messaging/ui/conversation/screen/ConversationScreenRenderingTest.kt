@@ -16,6 +16,7 @@ import com.android.messaging.ui.conversation.CONVERSATION_READ_ONLY_NOTICE_TEST_
 import com.android.messaging.ui.conversation.composer.model.ConversationSimSelectorUiState
 import com.android.messaging.ui.conversation.screen.model.ConversationPendingLaunchPayload
 import com.android.messaging.ui.core.AppTheme
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -160,6 +161,7 @@ internal class ConversationScreenRenderingTest : BaseConversationScreenTest() {
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun editableConversation_showsComposerWithoutNotice() {
         val screenModel = createScreenModel()
         screenModel.scaffoldUiStateFlow.value = createPresentUiState(

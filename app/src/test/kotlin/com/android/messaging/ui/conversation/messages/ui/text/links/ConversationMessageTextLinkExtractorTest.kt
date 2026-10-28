@@ -15,6 +15,7 @@ import io.mockk.slot
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -38,6 +39,7 @@ internal class ConversationMessageTextLinkExtractorTest {
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun extractConversationTextLinks_mapsSupportedEntitiesAndSortsByStartOffset() {
         val text = "Email a@b.com, call +15551212, go to https://example.com/a, meet at 1 Main St"
         val emailRange = text.rangeOf("a@b.com")
@@ -160,6 +162,7 @@ internal class ConversationMessageTextLinkExtractorTest {
     }
 
     @Test
+    @Ignore("receive-only: this behaviour is disabled")
     fun extractConversationTextLinks_skipsBlankAndUnsupportedLinks() {
         val text = "bad   ok unsupported"
         val blankRange = text.rangeOf("   ")

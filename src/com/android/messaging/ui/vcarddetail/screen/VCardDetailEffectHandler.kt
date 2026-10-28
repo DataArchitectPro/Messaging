@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
-import com.android.messaging.data.vcarddetail.model.VCardFieldAction
 import com.android.messaging.R
+import com.android.messaging.data.vcarddetail.model.VCardFieldAction
 import com.android.messaging.di.vcarddetail.VCardDetailEntryPoint
 import com.android.messaging.ui.UIIntents
 import com.android.messaging.ui.vcarddetail.screen.model.VCardDetailScreenEffect as Effect
