@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import com.android.messaging.R
 import com.android.messaging.data.subscription.model.SubId
 import com.android.messaging.ui.appsettings.common.SettingsCategoryHeader
-import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.ui.appsettings.common.SettingsClickableItem
 import com.android.messaging.ui.appsettings.common.SettingsSwitchItem
 import com.android.messaging.ui.appsettings.common.SettingsTopAppBar
@@ -48,6 +47,7 @@ import com.android.messaging.ui.appsettings.subscription.model.SubscriptionSetti
 import com.android.messaging.ui.appsettings.subscription.model.SubscriptionUiState
 import com.android.messaging.ui.common.text.asLtrText
 import com.android.messaging.ui.core.MessagingPreviewTheme
+import com.android.messaging.util.ReceiveOnlyPolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

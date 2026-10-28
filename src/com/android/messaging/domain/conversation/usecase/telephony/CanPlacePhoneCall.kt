@@ -15,11 +15,11 @@ internal class CanPlacePhoneCallImpl @Inject constructor(
 
     override operator fun invoke(destination: String?): Boolean {
         // receive-only: no screen may offer a call
-        if (!ReceiveOnlyPolicy.CALLING_ENABLED) return false
+        val phoneNumber = destination?.takeIf(String::isNotBlank)
 
-        val phoneNumber = destination?.takeIf(String::isNotBlank) ?: return false
-
-        return isDeviceVoiceCapable() &&
+        return ReceiveOnlyPolicy.CALLING_ENABLED &&
+            phoneNumber != null &&
+            isDeviceVoiceCapable() &&
             PhoneNumberUtils.isWellFormedSmsAddress(phoneNumber) &&
             !isEmergencyPhoneNumber(phoneNumber)
     }
