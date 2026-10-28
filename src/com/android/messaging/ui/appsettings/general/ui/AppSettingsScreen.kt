@@ -80,6 +80,16 @@ private fun LazyListScope.coreSettingsItems(
     onAction: (Action) -> Unit,
     onPrivacyClick: () -> Unit,
 ) {
+    // receive-only: informational row, there is nothing to configure
+    item(key = "receive_only_mode") {
+        SettingsClickableItem(
+            title = stringResource(R.string.receive_only_mode_title),
+            summary = stringResource(R.string.receive_only_mode_summary),
+            enabled = false,
+            onClick = {},
+        )
+    }
+
     item(key = "default_sms_app") {
         SettingsClickableItem(
             title = stringResource(R.string.sms_disabled_pref_title),

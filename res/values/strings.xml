@@ -920,4 +920,6 @@
     <!-- receive-only fork strings -->
     <string name="receive_only_calls_disabled">Calls are disabled. Number copied.</string>
     <string name="receive_only_composer_banner">Receive only: sending is disabled</string>
+    <string name="receive_only_mode_title">Mode: receive only</string>
+    <string name="receive_only_mode_summary">Sending messages and calls are disabled in this app</string>
 </resources>

@@ -355,4 +355,6 @@
 
     <string name="receive_only_calls_disabled">Звонки отключены. Номер скопирован.</string>
     <string name="receive_only_composer_banner">Только приём: отправка отключена</string>
+    <string name="receive_only_mode_title">Режим: только приём</string>
+    <string name="receive_only_mode_summary">Отправка сообщений и звонки в этом приложении отключены</string>
 </resources>
