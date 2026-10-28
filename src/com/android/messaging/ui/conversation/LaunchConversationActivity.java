@@ -16,6 +16,7 @@
 
 package com.android.messaging.ui.conversation;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -92,6 +93,10 @@ public class LaunchConversationActivity extends Activity implements
                         mSmsBody = intent.getStringExtra(Intent.EXTRA_TEXT);
                     }
                 }
+            }
+            // receive-only: never prefill a draft from sms_body, body= or EXTRA_TEXT
+            if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+                mSmsBody = null;
             }
             if (recipients != null) {
                 mBinding.bind(DataModel.get().createLaunchConversationData(this));
