@@ -193,6 +193,12 @@ $A uninstall <pkg>
 - Тесты, проверяющие отключённые функции, помечены `@Ignore("receive-only: ...")`.
 - Ключ подписи: `~/keys/messaging-ro.jks`, пароль в `keystore.properties` (не в git). Бэкап ключа сделать вне этого сервера.
 
+## 5b. Статус выполнения (28.10.2026)
+Выполнено: этапы 1-7 целиком. Форк `17-ro1` стоит на Pixel, роль SMS у него, `com.android.messaging` отключён (`pm disable-user`), на телефоне нет `SEND_SMS`/`CALL_PHONE`, `outbox`/`sent` пусты, мобильные данные 0/0. Бэкап и откат: `~/assistant/backups/pixel-messaging-swap-2026-10-28/`, memory `pixel-sim-protection`.
+Не проверено: приём настоящей SMS на форке (на эмуляторе приём и уведомление проверены). Нужно попросить прислать SMS на O2-номер и убедиться, что есть уведомление без «Ответить».
+Бэкап ключа подписи лежит только на серверах (dev-сервер, omarchy-pc, `~/assistant/backups/signing-key-messaging-ro`). Скопировать вне серверов (менеджер паролей/флешка), иначе обновить приложение потом не получится.
+Сборка и тесты идут на omarchy-pc (`~/android-dev/env.sh`, `~/Projects/Messaging`).
+
 ## 6. Принятые решения (28.10.2026)
 1. Приём SMS у системного приложения восстановлен (выполнено, см. раздел 0).
 2. applicationId `io.github.dataarchitectpro.messaging`, название «SMS (приём)».
