@@ -187,6 +187,12 @@ $A uninstall <pkg>
 
 ---
 
+## 5a. Результаты проверки на эмуляторе (28.10.2026)
+- Роль SMS назначается без `SEND_SMS` (подтверждено, `RECEIVE_SMS`/`READ_SMS`/`RECEIVE_MMS` выданы ролью).
+- Расхождение с планом: без `SEND_SMS` платформа (`SmsApplication`) пишет `lost android:send_sms (no permission to fix)`, и `Telephony.Sms.getDefaultSmsPackage()` перестаёт возвращать приложение. Из-за этого `PhoneUtils.isDefaultSmsApp()` был false: не было уведомлений и синхронизации. Исправлено в `PhoneUtils.getDefaultSmsApp()` через `RoleManager.isRoleHeld(ROLE_SMS)` (комментарий `receive-only:`). `SEND_SMS` в манифест не возвращается.
+- Тесты, проверяющие отключённые функции, помечены `@Ignore("receive-only: ...")`.
+- Ключ подписи: `~/keys/messaging-ro.jks`, пароль в `keystore.properties` (не в git). Бэкап ключа сделать вне этого сервера.
+
 ## 6. Принятые решения (28.10.2026)
 1. Приём SMS у системного приложения восстановлен (выполнено, см. раздел 0).
 2. applicationId `io.github.dataarchitectpro.messaging`, название «SMS (приём)».

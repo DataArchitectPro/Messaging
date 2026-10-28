@@ -16,6 +16,7 @@
 
 package com.android.messaging.util;
 
+import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -943,8 +944,7 @@ public class PhoneUtils {
      * Is Messaging the default SMS app?
      */
     public boolean isDefaultSmsApp() {
-        final String configuredApplication = Telephony.Sms.getDefaultSmsPackage(mContext);
-        return mContext.getPackageName().equals(configuredApplication);
+        return mContext.getPackageName().equals(getDefaultSmsApp());
     }
 
     /**
@@ -953,6 +953,13 @@ public class PhoneUtils {
      * @return the package name of default SMS app
      */
     public String getDefaultSmsApp() {
+        // receive-only: without SEND_SMS in the manifest the platform's SmsApplication treats the
+        // app as having lost its send_sms app-op and getDefaultSmsPackage() no longer returns it,
+        // so ask for the SMS role directly (isRoleHeld is public API).
+        final RoleManager roleManager = mContext.getSystemService(RoleManager.class);
+        if (roleManager != null && roleManager.isRoleHeld(RoleManager.ROLE_SMS)) {
+            return mContext.getPackageName();
+        }
         return Telephony.Sms.getDefaultSmsPackage(mContext);
     }
 
