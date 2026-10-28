@@ -16,6 +16,8 @@
 
 package com.android.messaging.widget;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
+import android.view.View;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -88,6 +90,10 @@ public class BugleWidgetProvider extends BaseWidgetProvider {
         clickIntent = UIIntents.get().getWidgetPendingIntentForNewConversation(context,
                 WIDGET_NEW_CONVERSATION_REQUEST_CODE);
         remoteViews.setOnClickPendingIntent(R.id.widget_compose, clickIntent);
+        // receive-only: no way to start a new conversation from the widget
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            remoteViews.setViewVisibility(R.id.widget_compose, View.GONE);
+        }
 
         // On click intent for Conversation
         // Note: the template intent has to be a "naked" intent without any extras. It turns out

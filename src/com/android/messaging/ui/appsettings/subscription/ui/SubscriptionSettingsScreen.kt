@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.android.messaging.R
 import com.android.messaging.data.subscription.model.SubId
 import com.android.messaging.ui.appsettings.common.SettingsCategoryHeader
+import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.ui.appsettings.common.SettingsClickableItem
 import com.android.messaging.ui.appsettings.common.SettingsSwitchItem
 import com.android.messaging.ui.appsettings.common.SettingsTopAppBar
@@ -141,6 +142,9 @@ private fun LazyListScope.mmsSettingsItems(
     onGroupMmsClick: () -> Unit,
     onPhoneNumberClick: () -> Unit,
 ) {
+    // receive-only: MMS can neither be sent nor downloaded, so its settings are hidden
+    if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) return
+
     item(key = "mms_category_header") {
         SettingsCategoryHeader(
             title = stringResource(R.string.mms_messaging_category_pref_title),
@@ -237,7 +241,10 @@ private fun LazyListScope.advancedSettingsItems(
     subscriptionSettings: SubscriptionUiState,
     onAction: (Action) -> Unit,
 ) {
-    val hasAdvanced = subscriptionSettings.isDeliveryReportsSupported ||
+    // receive-only: delivery reports only exist for sent messages
+    val showDeliveryReports = ReceiveOnlyPolicy.SENDING_ENABLED &&
+        subscriptionSettings.isDeliveryReportsSupported
+    val hasAdvanced = showDeliveryReports ||
         subscriptionSettings.isWirelessAlertsSupported
     if (!hasAdvanced) return
 
@@ -250,7 +257,7 @@ private fun LazyListScope.advancedSettingsItems(
         )
     }
 
-    if (subscriptionSettings.isDeliveryReportsSupported) {
+    if (showDeliveryReports) {
         item(key = "delivery_reports") {
             SettingsSwitchItem(
                 title = stringResource(R.string.delivery_reports_pref_title),
