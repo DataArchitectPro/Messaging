@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.android.messaging.data.vcarddetail.model.VCardFieldAction
+import com.android.messaging.R
 import com.android.messaging.di.vcarddetail.VCardDetailEntryPoint
 import com.android.messaging.ui.UIIntents
 import com.android.messaging.ui.vcarddetail.screen.model.VCardDetailScreenEffect as Effect
@@ -64,6 +65,13 @@ internal class VCardDetailEffectHandlerImpl(
     }
 
     private fun openFieldAction(action: VCardFieldAction) {
+        // receive-only: never open the dialer, copy the number instead
+        if (action is VCardFieldAction.Dial) {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText(null, action.number))
+            UiUtils.showToastAtBottom(R.string.receive_only_calls_disabled)
+            return
+        }
+
         val intent = fieldActionIntent(action) ?: return
 
         try {
@@ -76,7 +84,8 @@ internal class VCardDetailEffectHandlerImpl(
     private fun fieldActionIntent(action: VCardFieldAction): Intent? {
         return when (action) {
             is VCardFieldAction.Dial -> {
-                Intent(Intent.ACTION_DIAL, "tel:${action.number}".toUri())
+                // receive-only: never dial, openFieldAction copies the number instead
+                null
             }
 
             is VCardFieldAction.Email -> {

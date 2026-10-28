@@ -54,8 +54,10 @@ android {
     namespace = "com.android.messaging"
 
     defaultConfig {
+        // receive-only: own applicationId, the system package is signed with the GrapheneOS key
+        applicationId = "io.github.dataarchitectpro.messaging"
         versionCode = 20000000 + 17
-        versionName = "17"
+        versionName = "17-ro1"
         minSdk = 36
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -137,7 +139,7 @@ android {
 
         getByName("debug") {
             applicationIdSuffix = ".debug"
-            resValue("string", "app_name", "Messaging d")
+            resValue("string", "app_name", "SMS (приём) d")
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
         }
@@ -146,7 +148,7 @@ android {
             initWith(getByName("release"))
             applicationIdSuffix = ".debug"
             matchingFallbacks += listOf("release")
-            resValue("string", "app_name", "Messaging d")
+            resValue("string", "app_name", "SMS (приём) d")
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -254,4 +256,30 @@ dependencies {
     androidTestImplementation(libs.mockk.agent)
     androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.turbine)
+}
+
+// receive-only: fail the build if the merged manifest can send SMS, call or be shared to.
+androidComponents {
+    onVariants { variant ->
+        val variantName = variant.name.replaceFirstChar { it.uppercase() }
+        val checkTask = tasks.register("checkReceiveOnlyManifest$variantName") {
+            val manifest = variant.artifacts.get(com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST)
+            inputs.file(manifest)
+            doLast {
+                val text = manifest.get().asFile.readText()
+                val forbidden = listOf(
+                    "android.permission.SEND_SMS",
+                    "android.permission.CALL_PHONE",
+                    "android.intent.action.SEND\"",
+                    "android.intent.action.SEND_MULTIPLE\"",
+                ).filter { text.contains(it) }
+                check(forbidden.isEmpty()) {
+                    "receive-only: merged manifest of $variantName contains $forbidden"
+                }
+            }
+        }
+        tasks.matching { it.name == "assemble$variantName" || it.name == "bundle$variantName" }
+            .configureEach { dependsOn(checkTask) }
+        tasks.matching { it.name == "package$variantName" }.configureEach { dependsOn(checkTask) }
+    }
 }

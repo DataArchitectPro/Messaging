@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -43,6 +44,11 @@ public class RedownloadMmsAction extends Action implements Parcelable {
      * Download an MMS message
      */
     public static void redownloadMessage(final String messageId) {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "RedownloadMmsAction.redownloadMessage");
+            return;
+        }
         final RedownloadMmsAction action = new RedownloadMmsAction(messageId);
         action.start();
     }
@@ -73,6 +79,11 @@ public class RedownloadMmsAction extends Action implements Parcelable {
      */
     @Override
     protected Object executeAction() {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "RedownloadMmsAction.executeAction");
+            return null;
+        }
         final String messageId = actionParameters.getString(KEY_MESSAGE_ID);
 
         final DatabaseWrapper db = DataModel.get().getDatabase();

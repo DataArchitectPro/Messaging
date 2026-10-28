@@ -45,15 +45,14 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toPersistentList
 
 private val messageSelectionActions = persistentListOf(
-    ConversationMessageAction.Download,
-    ConversationMessageAction.Resend,
+    // receive-only: no Download and no Resend
     ConversationMessageAction.Copy,
     ConversationMessageAction.Delete,
 )
 
 private val conversationMessageActions = persistentListOf(
     ConversationMessageAction.Share,
-    ConversationMessageAction.Forward,
+    // receive-only: no Forward
     ConversationMessageAction.SaveAttachment,
     ConversationMessageAction.Details,
 )

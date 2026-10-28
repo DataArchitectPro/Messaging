@@ -16,6 +16,7 @@
 
 package com.android.messaging.sms;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -147,6 +148,12 @@ public class MmsSender {
     private static void sendMms(final Context context, final int subId, final Uri messageUri,
             final String locationUrl, final GenericPdu pdu, final boolean responseImportant,
             final Bundle sentIntentExtras) throws MmsFailureException {
+        // receive-only: also covers NotifyRespInd/AcknowledgeInd sent after an MMS download
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "MmsSender.sendMms");
+            throw new MmsFailureException(MmsUtils.MMS_REQUEST_NO_RETRY,
+                    "receive-only: sending is disabled");
+        }
         // Write PDU to temporary file to send to platform
         final Uri contentUri = writePduToTempFile(context, pdu, subId);
 
@@ -248,6 +255,12 @@ public class MmsSender {
     public static void downloadMms(final Context context, final int subId,
             final String contentLocation, Bundle extras) throws MmsFailureException,
             InvalidHeaderValueException {
+        // receive-only: MMS download would use the MMS APN (roaming)
+        if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "MmsSender.downloadMms");
+            throw new MmsFailureException(MmsUtils.MMS_REQUEST_NO_RETRY,
+                    "receive-only: MMS download is disabled");
+        }
         final Uri requestUri = Uri.parse(contentLocation);
         final Uri contentUri = MmsFileProvider.buildRawMmsUri();
 

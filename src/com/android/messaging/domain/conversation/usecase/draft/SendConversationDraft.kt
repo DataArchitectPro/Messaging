@@ -1,5 +1,6 @@
 package com.android.messaging.domain.conversation.usecase.draft
 
+import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.data.conversation.mapper.ConversationDraftMessageDataMapper
 import com.android.messaging.data.conversation.model.ConversationId
 import com.android.messaging.data.conversation.model.draft.ConversationDraft
@@ -94,6 +95,9 @@ internal class SendConversationDraftImpl @Inject constructor(
         draft: ConversationDraft,
         ignoreMessageSizeLimit: Boolean,
     ) {
+        // receive-only: backstop, the UI has no composer
+        check(ReceiveOnlyPolicy.SENDING_ENABLED) { "receive-only: sending is disabled" }
+
         validateDraftBasics(
             conversationId = conversationId,
             draft = draft,

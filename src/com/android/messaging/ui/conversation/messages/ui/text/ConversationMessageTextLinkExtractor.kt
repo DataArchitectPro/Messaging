@@ -102,7 +102,8 @@ private fun resolveConversationTextLinkUrl(
     return when (entityType) {
         TextClassifier.TYPE_ADDRESS -> "geo:0,0?q=${Uri.encode(rawLinkText)}"
         TextClassifier.TYPE_EMAIL -> "mailto:${Uri.encode(rawLinkText)}"
-        TextClassifier.TYPE_PHONE -> "tel:${Uri.encode(rawLinkText)}"
+        // receive-only: phone numbers stay plain text, no tel: link
+        TextClassifier.TYPE_PHONE -> null
         TextClassifier.TYPE_URL -> resolveConversationWebUrl(rawLinkText = rawLinkText)
         else -> null
     }

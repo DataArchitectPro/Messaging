@@ -15,6 +15,9 @@
  */
 package com.android.messaging.ui;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
+import android.widget.Toast;
+import android.content.ClipboardManager;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -159,6 +162,15 @@ public class UIIntentsImpl extends UIIntents {
     @Override
     public void launchPhoneCallActivity(final Context context, final String phoneNumber,
                                         final Point clickPosition) {
+        // receive-only: calls are disabled, copy the number instead
+        if (!ReceiveOnlyPolicy.CALLING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "launchPhoneCallActivity");
+            final ClipboardManager clipboard = context.getSystemService(ClipboardManager.class);
+            clipboard.setPrimaryClip(ClipData.newPlainText(null, phoneNumber));
+            Toast.makeText(context, R.string.receive_only_calls_disabled, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
         final Intent intent = new Intent(Intent.ACTION_CALL,
                 Uri.parse(UriUtil.SCHEME_TEL + phoneNumber));
         final Bundle extras = new Bundle();

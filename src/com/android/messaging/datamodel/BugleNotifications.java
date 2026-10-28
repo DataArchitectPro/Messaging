@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -548,7 +549,8 @@ public class BugleNotifications {
                         context.getString(R.string.mark_as_read), markAsReadPendingIntent).build();
         notifBuilder.addAction(markAsReadActionBuilder);
 
-        if (canReplyFromNotification(conversation)) {
+        // receive-only: no reply action in notifications
+        if (ReceiveOnlyPolicy.SENDING_ENABLED && canReplyFromNotification(conversation)) {
             final String selfId = conversation.mSelfParticipantId;
 
             final boolean requiresMms =
@@ -573,7 +575,9 @@ public class BugleNotifications {
         }
 
         final String messageId = conversation.getLatestMessageId();
-        if (conversation.getDoesLatestMessageNeedDownload() && messageId != null
+        // receive-only: no MMS download action
+        if (ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED
+                && conversation.getDoesLatestMessageNeedDownload() && messageId != null
                 && !OsUtil.isSecondaryUser()) {
             final PendingIntent downloadPendingIntent =
                     RedownloadMmsAction.getPendingIntentForRedownloadMms(context,

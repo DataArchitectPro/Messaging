@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,6 +54,12 @@ public class NoConfirmationSmsSendService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         if (LogUtil.isLoggable(TAG, LogUtil.VERBOSE)) {
             LogUtil.v(TAG, "NoConfirmationSmsSendService onHandleIntent");
+        }
+
+        // receive-only: respond-via-message must never send; the service exists only for the SMS role
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "NoConfirmationSmsSendService");
+            return;
         }
 
         final String action = intent.getAction();

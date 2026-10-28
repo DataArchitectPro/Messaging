@@ -16,6 +16,7 @@
 
 package com.android.messaging.sms;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -180,6 +181,11 @@ public class SmsSender {
     public static SendResult sendMessage(final Context context, final int subId, String dest,
             String message, final String serviceCenter, final boolean requireDeliveryReport,
             final Uri messageUri) throws SmsException {
+        // receive-only: never talk to SmsManager
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "SmsSender.sendMessage");
+            throw new SmsException("receive-only: sending is disabled");
+        }
         if (LogUtil.isLoggable(TAG, LogUtil.VERBOSE)) {
             LogUtil.v(TAG, "SmsSender: sending message. " +
                     "dest=" + dest + " message=" + message +

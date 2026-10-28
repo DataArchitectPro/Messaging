@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Parcel;
@@ -56,6 +57,11 @@ public class InsertNewMessageAction extends Action implements Parcelable {
      * Insert message (no listener)
      */
     public static void insertNewMessage(final MessageData message) {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "InsertNewMessageAction");
+            return;
+        }
         final InsertNewMessageAction action = new InsertNewMessageAction(message);
         action.start();
     }
@@ -64,6 +70,11 @@ public class InsertNewMessageAction extends Action implements Parcelable {
      * Insert message (no listener) with a given non-default subId.
      */
     public static void insertNewMessage(final MessageData message, final int subId) {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "InsertNewMessageAction");
+            return;
+        }
         Assert.isFalse(subId == ParticipantData.DEFAULT_SELF_SUB_ID);
         final InsertNewMessageAction action = new InsertNewMessageAction(message, subId);
         action.start();
@@ -74,6 +85,11 @@ public class InsertNewMessageAction extends Action implements Parcelable {
      */
     public static void insertNewMessage(final int subId, final String recipients,
             final String messageText, final String subject) {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "InsertNewMessageAction");
+            return;
+        }
         final InsertNewMessageAction action = new InsertNewMessageAction(
                 subId, recipients, messageText, subject);
         action.start();
@@ -117,6 +133,11 @@ public class InsertNewMessageAction extends Action implements Parcelable {
      */
     @Override
     protected Object executeAction() {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "InsertNewMessageAction.executeAction");
+            return null;
+        }
         MessageData message = actionParameters.getParcelable(KEY_MESSAGE);
         if (message == null) {
             LogUtil.i(TAG, "InsertNewMessageAction: Creating MessageData with provided data");

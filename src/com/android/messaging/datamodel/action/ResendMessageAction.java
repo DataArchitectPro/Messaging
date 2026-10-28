@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -44,6 +45,11 @@ public class ResendMessageAction extends Action implements Parcelable {
      * Manual send of existing message (no listener)
      */
     public static void resendMessage(final String messageId) {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "ResendMessageAction.resendMessage");
+            return;
+        }
         final ResendMessageAction action = new ResendMessageAction(messageId);
         action.start();
     }
@@ -72,6 +78,11 @@ public class ResendMessageAction extends Action implements Parcelable {
      */
     @Override
     protected Object executeAction() {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "ResendMessageAction.executeAction");
+            return null;
+        }
         final String messageId = actionParameters.getString(KEY_MESSAGE_ID);
 
         final DatabaseWrapper db = DataModel.get().getDatabase();

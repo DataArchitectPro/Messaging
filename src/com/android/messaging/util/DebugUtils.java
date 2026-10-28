@@ -578,7 +578,7 @@ public class DebugUtils {
 
     /** Shares a ringtone file via file URI. */
     private static void shareFileUri() {
-        final String packageName = "com.android.messaging";
+        final String packageName = Factory.get().getApplicationContext().getPackageName(); // receive-only: own applicationId
         final String fileName = "/system/media/audio/ringtones/Andromeda.ogg";
 
         Intent intent = new Intent(Intent.ACTION_SEND);

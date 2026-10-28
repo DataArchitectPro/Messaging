@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -66,6 +67,11 @@ public class DownloadMmsAction extends Action implements Parcelable {
      */
     static boolean queueMmsForDownloadInBackground(final String messageId,
             final Action processingAction) {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "DownloadMmsAction.queueMmsForDownloadInBackground");
+            return false;
+        }
         // When this method is being called, it is always from auto download
         final DownloadMmsAction action = new DownloadMmsAction();
         // This could queue nothing
@@ -239,6 +245,11 @@ public class DownloadMmsAction extends Action implements Parcelable {
 
     @Override
     protected Bundle doBackgroundWork() {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "DownloadMmsAction.doBackgroundWork");
+            return null;
+        }
         final Context context = Factory.get().getApplicationContext();
         final int subId = actionParameters.getInt(KEY_SUB_ID);
         final String messageId = actionParameters.getString(KEY_MESSAGE_ID);

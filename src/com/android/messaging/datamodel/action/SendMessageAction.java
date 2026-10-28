@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -56,6 +57,11 @@ public class SendMessageAction extends Action implements Parcelable {
      */
     static boolean queueForSendInBackground(final String messageId,
             final Action processingAction) {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "SendMessageAction.queueForSendInBackground");
+            return false;
+        }
         final SendMessageAction action = new SendMessageAction();
         return action.queueAction(messageId, processingAction);
     }
@@ -190,6 +196,11 @@ public class SendMessageAction extends Action implements Parcelable {
      */
     @Override
     protected Bundle doBackgroundWork() {
+        // receive-only: nothing may be sent or downloaded
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "SendMessageAction.doBackgroundWork");
+            return null;
+        }
         final MessageData message = actionParameters.getParcelable(KEY_MESSAGE);
         final String messageId = actionParameters.getString(KEY_MESSAGE_ID);
         Uri messageUri = actionParameters.getParcelable(KEY_MESSAGE_URI);

@@ -15,6 +15,7 @@
  */
 package com.android.messaging.datamodel;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
@@ -819,7 +820,8 @@ public class MessageNotificationState {
                                 MessageData.BUGLE_STATUS_INCOMING_DOWNLOAD_FAILED) {
                             failureStringId =
                                     R.string.notification_download_failures_line1_singular;
-                            if (!OsUtil.isSecondaryUser()) {
+                            // receive-only: no MMS download action
+                            if (ReceiveOnlyPolicy.MMS_DOWNLOAD_ENABLED && !OsUtil.isSecondaryUser()) {
                                 builder.addAction(R.drawable.ic_file_download_light,
                                         context.getString(R.string.notification_download_mms),
                                         RedownloadMmsAction.getPendingIntentForRedownloadMms(
@@ -828,10 +830,13 @@ public class MessageNotificationState {
                             }
                         } else {
                             failureStringId = R.string.notification_send_failures_line1_singular;
-                            builder.addAction(0,
-                                    context.getString(R.string.notification_retry_prompt),
-                                    ResendMessageAction.getPendingIntentForResendMessage(
-                                            context, messageId));
+                            // receive-only: no retry action
+                            if (ReceiveOnlyPolicy.SENDING_ENABLED) {
+                                builder.addAction(0,
+                                        context.getString(R.string.notification_retry_prompt),
+                                        ResendMessageAction.getPendingIntentForResendMessage(
+                                                context, messageId));
+                            }
                         }
                         line1 = resources.getString(failureStringId);
                         line2 = describeFailedMessage(

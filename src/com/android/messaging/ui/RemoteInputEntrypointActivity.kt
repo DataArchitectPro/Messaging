@@ -5,11 +5,20 @@ import android.os.Bundle
 import android.telephony.TelephonyManager
 import com.android.messaging.datamodel.NoConfirmationSmsSendService
 import com.android.messaging.util.LogUtil
+import com.android.messaging.util.ReceiveOnlyPolicy
 
 class RemoteInputEntrypointActivity : BugleComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // receive-only: replying from a notification is disabled
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(LogUtil.BUGLE_TAG, "${ReceiveOnlyPolicy.LOG_PREFIX}RemoteInputEntrypointActivity")
+            setResult(RESULT_CANCELED)
+            finish()
+            return
+        }
 
         when (intent?.action) {
             Intent.ACTION_SENDTO -> {

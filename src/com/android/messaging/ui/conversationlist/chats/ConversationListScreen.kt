@@ -56,6 +56,7 @@ import com.android.messaging.ui.common.components.ComposeBarControlHeight
 import com.android.messaging.ui.common.components.ComposeBarVerticalPadding
 import com.android.messaging.ui.common.components.LocalIsListDetailPane
 import com.android.messaging.ui.common.components.PrimaryActionButton
+import com.android.messaging.util.ReceiveOnlyPolicy
 import com.android.messaging.ui.common.components.contentSurfaceShape
 import com.android.messaging.ui.common.components.horizontalSafeDrawingInsets
 import com.android.messaging.ui.common.components.reorder.OverlayReorderAnimation
@@ -577,6 +578,9 @@ private fun StartChatFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // receive-only: no new conversations can be started
+    if (!ReceiveOnlyPolicy.SENDING_ENABLED) return
+
     AnimatedVisibility(
         modifier = modifier,
         visible = visible,

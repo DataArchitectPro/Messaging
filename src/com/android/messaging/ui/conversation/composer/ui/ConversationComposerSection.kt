@@ -1,10 +1,19 @@
 package com.android.messaging.ui.conversation.composer.ui
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.android.messaging.R
 import com.android.messaging.domain.conversation.usecase.draft.model.ConversationDraftSendProtocol
 import com.android.messaging.ui.conversation.audio.model.ConversationAudioRecordingUiState
 import com.android.messaging.ui.conversation.composer.model.ComposerAttachmentUiModel
@@ -13,6 +22,7 @@ import com.android.messaging.ui.conversation.preview.previewComposerWithAttachme
 import com.android.messaging.ui.core.MessagingPreviewTheme
 import kotlinx.collections.immutable.ImmutableList
 
+@Suppress("UnusedParameter", "LongParameterList")
 @Composable
 internal fun ConversationComposerSection(
     modifier: Modifier = Modifier,
@@ -45,41 +55,19 @@ internal fun ConversationComposerSection(
     onSubjectChipClick: () -> Unit,
     onSubjectChipClear: () -> Unit,
 ) {
-    Column(
-        modifier = modifier,
+    // receive-only: no attachments, no compose bar, nothing that can send
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
-        ConversationAttachmentPreview(
-            attachments = attachments,
-            onPendingAttachmentRemove = onPendingAttachmentRemove,
-            onResolvedAttachmentClick = onResolvedAttachmentClick,
-            onResolvedAttachmentRemove = onResolvedAttachmentRemove,
-        )
-
-        ConversationComposeBar(
-            audioRecording = audioRecording,
-            messageText = messageText,
-            messageTextRevision = messageTextRevision,
-            subjectText = subjectText,
-            sendProtocol = sendProtocol,
-            segmentCounter = segmentCounter,
-            isMessageFieldEnabled = isMessageFieldEnabled,
-            isAttachmentActionEnabled = isAttachmentActionEnabled,
-            isRecordActionEnabled = isRecordActionEnabled,
-            isSendActionEnabled = isSendActionEnabled,
-            shouldShowRecordAction = shouldShowRecordAction,
-            messageFieldFocusRequester = messageFieldFocusRequester,
-            onContactAttachClick = onContactAttachClick,
-            onMediaPickerClick = onMediaPickerClick,
-            onLockedAudioRecordingStartRequest = onLockedAudioRecordingStartRequest,
-            onMessageTextChange = onMessageTextChange,
-            onAudioRecordingStartRequest = onAudioRecordingStartRequest,
-            onAudioRecordingFinish = onAudioRecordingFinish,
-            onAudioRecordingLock = onAudioRecordingLock,
-            onAudioRecordingCancel = onAudioRecordingCancel,
-            onSendClick = onSendClick,
-            onSendActionLongClick = onSendActionLongClick,
-            onSubjectChipClick = onSubjectChipClick,
-            onSubjectChipClear = onSubjectChipClear,
+        Text(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .padding(16.dp),
+            text = stringResource(R.string.receive_only_composer_banner),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
         )
     }
 }

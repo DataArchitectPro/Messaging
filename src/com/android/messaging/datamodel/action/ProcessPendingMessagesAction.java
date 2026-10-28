@@ -16,6 +16,7 @@
 
 package com.android.messaging.datamodel.action;
 
+import com.android.messaging.util.ReceiveOnlyPolicy;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
@@ -54,6 +55,11 @@ public class ProcessPendingMessagesAction extends Action implements Parcelable {
     private static final String KEY_SUB_ID = "sub_id";
 
     public static void processFirstPendingMessage() {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "ProcessPendingMessagesAction.processFirstPendingMessage");
+            return;
+        }
         PhoneUtils.forEachActiveSubscription(new PhoneUtils.SubscriptionRunnable() {
             @Override
             public void runForSubscription(final int subId) {
@@ -71,6 +77,11 @@ public class ProcessPendingMessagesAction extends Action implements Parcelable {
 
     public static void scheduleProcessPendingMessagesAction(final boolean failed,
             final Action processingAction) {
+        // receive-only: nothing may be sent
+        if (!ReceiveOnlyPolicy.SENDING_ENABLED) {
+            LogUtil.w(TAG, ReceiveOnlyPolicy.LOG_PREFIX + "ProcessPendingMessagesAction.schedule");
+            return;
+        }
         final int subId = processingAction.actionParameters
                 .getInt(KEY_SUB_ID, ParticipantData.DEFAULT_SELF_SUB_ID);
         LogUtil.i(TAG, "ProcessPendingMessagesAction: Scheduling pending messages"

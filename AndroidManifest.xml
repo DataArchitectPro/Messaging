@@ -23,7 +23,6 @@
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_MMS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
     <!-- Application needs access to MMS network -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -41,7 +40,6 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -167,25 +165,11 @@
             android:theme="@style/Theme.Compose"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!-- receive-only: no SEND/SEND_MULTIPLE filter, the app must not appear in the share sheet -->
         <activity-alias
             android:name=".ui.conversationlist.ShareIntentActivity"
-            android:exported="true"
-            android:targetActivity=".ui.conversationpicker.host.share.ShareIntentActivity">
-            <intent-filter android:label="@string/share_intent_label">
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.SEND_MULTIPLE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-                <data android:mimeType="text/x-vCard" />
-                <data android:mimeType="text/x-vcard" />
-                <data android:mimeType="image/*" />
-                <data android:mimeType="audio/*" />
-                <data android:mimeType="video/*" />
-                <data android:mimeType="application/ogg" />
-            </intent-filter>
-        </activity-alias>
+            android:exported="false"
+            android:targetActivity=".ui.conversationpicker.host.share.ShareIntentActivity" />
 
         <!-- License -->
         <activity
